@@ -15,10 +15,21 @@ import {createHeading} from "../components/heading.mjs";
 // Hashtag view: show all tweets containing this tag
 
 function hashtagView(hashtag) {
-  destroy();
+  destroy();// Tear down any previously rendered view before drawing this one.
+   const formattedHashtag = hashtag.startsWith('#') ? hashtag : `#${hashtag}`;// Ensure the hashtag always has a leading '#' so comparisons are reliable.
+  //Only fetch data if the hashtag has changed since the last render. 
+  // This prevents infinite loops caused by re-renders or route updates.
+   if (state.currentHashtag !== formattedHashtag) {
+    state.currentHashtag = hashtag; // Store the new hashtag BEFORE fetching so the next render sees the update.
+    apiService.getBloomsByHashtag(hashtag); // Retrieve all blooms associated with this hashtag from the API.
+  }
 
+<<<<<<< Updated upstream
   apiService.getBloomsByHashtag(hashtag);
 
+=======
+  
+>>>>>>> Stashed changes
   renderOne(
     state.isLoggedIn,
     getLogoutContainer(),
