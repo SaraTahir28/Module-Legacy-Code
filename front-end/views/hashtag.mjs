@@ -24,12 +24,8 @@ function hashtagView(hashtag) {
     apiService.getBloomsByHashtag(hashtag); // Retrieve all blooms associated with this hashtag from the API.
   }
 
-<<<<<<< Updated upstream
-  apiService.getBloomsByHashtag(hashtag);
+ 
 
-=======
-  
->>>>>>> Stashed changes
   renderOne(
     state.isLoggedIn,
     getLogoutContainer(),
