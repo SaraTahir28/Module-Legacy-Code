@@ -15,8 +15,8 @@ test("should not make infinite hashtag endpoint requests", async ({ page }) => {
   // ====== ACT
   // When I navigate to the hashtag
   await page.goto("/#/hashtag/do");
-  // And I wait a reasonable time for any additional requests
-  await page.waitForTimeout(200);
+  //Wait for the UI to show the blooms have loaded
+  await page.locator("[data-bloom]").first().waitFor();
 
   // ====== ASSERT
   // Then the number of requests should be 1
