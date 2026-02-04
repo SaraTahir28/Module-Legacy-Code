@@ -39,9 +39,8 @@ function profileView(username) {
     createLogin
   );
   document
-    .querySelector("[data-action='login']")
-    ?.addEventListener("click", handleLogin);
-
+    .querySelector("[data-form='login']")//data-action triggers a certain behavior and data-form = login is a component identity for loginform
+    ?.addEventListener("submit", handleLogin); //js listen to a submit event on the form not a click event. 
   const profileData = state.profiles.find((p) => p.username === username);
   if (profileData) {
     renderOne(
