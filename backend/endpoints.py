@@ -153,19 +153,32 @@ def do_follow():
 @jwt_required()
 def send_bloom():
     type_check_error = verify_request_fields({"content": str})
+
     if type_check_error is not None:
         return type_check_error
+    
+    
+    content = request.json["content"]
+
+    MAXIMUM_BLOOM_LENGTH = 280
+
+    
+    if len(content) > MAXIMUM_BLOOM_LENGTH:
+        return make_response(
+            (
+                {
+                    "success": False,
+                    "message": f"Bloom cannot exceed {MAXIMUM_BLOOM_LENGTH} characters.",
+                },
+                400,
+            )
+        )
 
     user = get_current_user()
 
-    blooms.add_bloom(sender=user, content=request.json["content"])
+    blooms.add_bloom(sender=user, content=content)
 
-    return jsonify(
-        {
-            "success": True,
-        }
-    )
-
+    return jsonify({"success": True})
 
 def get_bloom(id_str):
     try:
