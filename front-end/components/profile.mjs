@@ -86,6 +86,6 @@ async function handleFollow(event) {
       } 
       await apiService.getWhoToFollow(); 
     
-  await apiService.getProfile(username); 
+  
     }
 export {createProfile, handleFollow};
