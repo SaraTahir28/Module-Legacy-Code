@@ -27,20 +27,34 @@ function createProfile(template, {profileData, whoToFollow, isLoggedIn}) {
   followerCountEl.textContent = profileData.followers?.length || 0;
   followingCountEl.textContent = profileData.follows?.length || 0;
   followButtonEl.setAttribute("data-username", profileData.username || "");
-  followButtonEl.hidden = profileData.is_self || profileData.is_following;
-  followButtonEl.addEventListener("click", handleFollow);
-  if (!isLoggedIn) {
+  //followButtonEl.hidden = profileData.is_self || profileData.is_following;
+  
+
+  //follow/unfollow toggle
+  if (profileData.is_self) {
+     followButtonEl.hidden = true; 
+    } else { 
+      followButtonEl.hidden = false;
+      followButtonEl.textContent = profileData.is_following ? "Unfollow" : "Follow"; 
+    
+    }
+
+if (!isLoggedIn) {
     followButtonEl.style.display = "none";
   }
+followButtonEl.addEventListener("click", handleFollow);
+  
 
   if (whoToFollow.length > 0) {
     const whoToFollowList = whoToFollowContainer.querySelector("[data-who-to-follow]");
     const whoToFollowTemplate = document.querySelector("#who-to-follow-chip");
+    
     for (const userToFollow of whoToFollow) {
       const wtfElement = whoToFollowTemplate.content.cloneNode(true);
       const usernameLink = wtfElement.querySelector("a[data-username]");
       usernameLink.innerText = userToFollow.username;
       usernameLink.setAttribute("href", `/profile/${userToFollow.username}`);
+      
       const followButton = wtfElement.querySelector("button");
       followButton.setAttribute("data-username", userToFollow.username);
       followButton.addEventListener("click", handleFollow);
@@ -62,8 +76,16 @@ async function handleFollow(event) {
   const username = button.getAttribute("data-username");
   if (!username) return;
 
-  await apiService.followUser(username);
-  await apiService.getWhoToFollow();
-}
-
+  const isUnfollowing = button.textContent === "Unfollow";
+   if (isUnfollowing) { 
+    await apiService.unfollowUser(username);
+     button.textContent = "Follow";
+    } else {
+      await apiService.followUser(username);
+       button.textContent = "Unfollow"; 
+      } 
+      await apiService.getWhoToFollow(); 
+    
+  await apiService.getProfile(username); 
+    }
 export {createProfile, handleFollow};
