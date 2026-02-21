@@ -19,7 +19,6 @@ import {createHeading} from "../components/heading.mjs";
    const formattedHashtag = hashtag.startsWith('#') ? hashtag : `#${hashtag}`;// Ensure the hashtag always has a leading '#' so comparisons are reliable.
   
    if (state.currentHashtag !== formattedHashtag) {
-    state.currentHashtag = formattedHashtag; 
     apiService.getBloomsByHashtag(formattedHashtag); 
   }
  
