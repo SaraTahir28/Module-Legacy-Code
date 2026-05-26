@@ -71,11 +71,16 @@ async function handleRebloom(event) {
   if (!bloomId) return;
 
   button.disabled = true; //preventing users from doubleclikcing and double reblooms
+  const result = await apiService.rebloom(bloomId);
 
-  await apiService.rebloom(bloomId); //POST request to  server.
-  
-  button.disabled = false; // so that user knows it has been rebloomed.
+  if (!result.success) {
+    alert(result.error || "You have already rebloomed this");
+  button.disabled = false;
+  return 
 }
+  button.disabled = true;
+}
+
 
 
 function _formatHashtags(text) {
