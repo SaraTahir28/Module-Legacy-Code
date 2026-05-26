@@ -294,9 +294,13 @@ async function rebloom(bloomId) {
     }
 
     return data;
+
   } catch (error) {
-    return {success: false};
+    return {
+      success: false,
+      error:error.message
   }
+}
 }
 
 const apiService = {
